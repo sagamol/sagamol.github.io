@@ -1,10 +1,13 @@
 
-let myMap = L.map("mapdiv");
+let myMap = L.map("mapdiv"); //http://leafletjs.com/reference-1.3.0.html#map-example
 let myLayers = {
-    osm: L.tileLayer ("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
+    osm: L.tileLayer ( //http://leafletjs.com/reference-1.3.0.html#tilelayer
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" //http://leafletjs.com/reference-1.3.0.html#control-attribution
+    ),
+
     geolandbasemap: L.tileLayer ("https://{s}.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png", {
-        subdomains : ["maps","maps1","maps2","maps3","maps4"],
-        attribution : "Datenquelle: <a href='https://www.basemap.at'>basemap.at</a>",
+        subdomains : ["maps","maps1","maps2","maps3","maps4"], //http://leafletjs.com/reference-1.3.0.html#tilelayer-option
+        attribution : "Datenquelle: <a href='https://www.basemap.at'>basemap.at</a>", //http://leafletjs.com/reference-1.3.0.html#control-attribution
     }
 ),
 
@@ -34,9 +37,9 @@ let myLayers = {
 
 }
 
-myMap.addLayer(myLayers.geolandbasemap);
+myMap.addLayer(myLayers.geolandbasemap); //http://leafletjs.com/reference-1.3.0.html#layer
 
-let myMapControl =L.control.layers({
+let myMapControl =L.control.layers({ //http://leafletjs.com/reference-1.3.0.html#control-layers
     "Openstreetmap" : myLayers.osm,
     "basemap.at Grundkarte" : myLayers.geolandbasemap,
     "basemap.at grau" : myLayers.bmapgrau,
@@ -45,8 +48,17 @@ let myMapControl =L.control.layers({
 },{
     "basemap.at Overlay" : myLayers.bmapoverlay,
 });
-myMap.addControl(myMapControl);
+myMap.addControl(myMapControl); //http://leafletjs.com/reference-1.3.0.html#control
 
 
 
-myMap.setView([47.267,11.383], 11);
+myMap.setView([47.267,11.383], 11); //http://leafletjs.com/reference-1.3.0.html#latlng
+
+
+
+
+let myScaleControl = L.control.scale (
+    position = 'bottomleft',
+    maxWidth = 200,
+    scale = 'metric',
+    ).addTo(myMap); //http://leafletjs.com/reference-1.3.0.html#control-scale-option
