@@ -1,4 +1,3 @@
-
 let myMap = L.map("mapdiv");
 let citybikegroup = L.featureGroup().addTo(myMap)
 let myLayers = {
@@ -65,30 +64,27 @@ geojson.bindPopup(function(layer) {
     
 });
 
- // async function addGeojson(url) {
- // console.log("Url wird geladen:", url);
- // const response = await fetch(url);
- // console.log("Response:", response);
- // const citybikedata = await response.json();
- // console.log("GeoJson:", citybikedata);
- // const geojson = L.geoJSON(citybikedata, {
-     // style: function(feature) {
-        // return { color: "#ff0000" };
-     // },
-     // pointToLayer: function(geoJsonPoint, latlng) {
-        // return L.marker(latlng, {
-            // icon: L.icon({
-                // iconUrl: "rad.png"
-            // })
-        // });
-     // }
- // });
+  async function addGeojson(url) {
+  console.log("Url wird geladen:", url);
+  const response = await fetch(url);
+ console.log("Response:", response);
+  const citybikedata = await response.json();
+  console.log("GeoJson:", citybikedata);
+  const geojson = L.geoJSON(citybikedata, {
+            pointToLayer: function(geoJsonPoint, latlng) {
+         return L.marker(latlng, {
+             icon: L.icon({
+                 iconUrl: "rad.png"
+             })
+         });
+      }
+  });
 citybikegroup.addLayer(geojson);
 myMap.fitBounds(citybikedata.getBounds());
- // }
+  }
 
-// const url ="https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&srsName=EPSG:4326&outputFormat=json&typeName=ogdwien:SPAZIERPUNKTOGD,ogdwien:SPAZIERLINIEOGD"
-// addGeojson(url);
+ const url =" https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:CITYBIKEOGD&srsName"
+ addGeojson(url);
 
 myMap.addLayer(citybikegroup);
 
