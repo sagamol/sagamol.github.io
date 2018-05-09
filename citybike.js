@@ -1,5 +1,5 @@
 let myMap = L.map("mapdiv");
-let citybikegroup = L.featureGroup().addTo(myMap)
+const citybikegroup = L.markerClusterGroup().addTo(myMap)
 let myLayers = {
     osm: L.tileLayer ("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
     geolandbasemap: L.tileLayer ("https://{s}.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png", {
@@ -55,14 +55,6 @@ console.log("Radstationen: ",citybikedata);
 
 
 
-let geojson = L.geoJSON(citybikedata).addTo(citybikegroup);
-geojson.bindPopup(function(layer) {
-    const props = layer.feature.properties;
-    const popupText = `<h1>Wien Citybikestationen</h1>
-    <p><strong>Station:</strong> <em>${props.STATION}</em> </p><p><strong>Bezirk:</strong> <em>${props.BEZIRK}</em> </p>`;
-    return popupText
-    
-});
 
     async function addGeojson(url) {
     console.log("Url wird geladen:", url);
@@ -82,7 +74,15 @@ geojson.bindPopup(function(layer) {
            });
         }
     });
+    
 
+    geojson.bindPopup(function(layer) {
+        const props = layer.feature.properties;
+        const popupText = `<h1>Wien Citybikestationen</h1>
+        <p><strong>Station:</strong> <em>${props.STATION}</em> </p><p><strong>Bezirk:</strong> <em>${props.BEZIRK}</em> </p>`;
+        return popupText;
+    });
+    
     const hash = new L.Hash(myMap);
     citybikegroup.addLayer(geojson);
     myMap.fitBounds(citybikedata.getBounds());
