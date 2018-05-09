@@ -84,6 +84,11 @@ console.log("Radstationen: ",citybikedata);
     });
     
     const hash = new L.Hash(myMap);
+
+    myMap.addControl( new L.Control.Search(
+        {layer: citybikegroup,
+        propertyName: 'STATION'
+    }) );
     citybikegroup.addLayer(geojson);
     myMap.fitBounds(citybikedata.getBounds());
     }
