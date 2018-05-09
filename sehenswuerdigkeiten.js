@@ -65,30 +65,30 @@ geojson.bindPopup(function(layer) {
     
 });
 
-// async function addGeojson(url) {
-// console.log("Url wird geladen:", url);
-// const response = await fetch(url);
-// console.log("Response:", response);
-// const sehenswuerdigkeitendata = await response.json();
-// console.log("GeoJson:", sehenswuerdigkeitendata);
-// const geojson = L.geoJSON(sehenswuerdigkeitendata, {
-   //  style: function(feature) {
-      //  return { color: "#ff0000" };
-    // },
-    // pointToLayer: function(geoJsonPoint, latlng) {
-       // return L.marker(latlng, {
-         //   icon: L.icon({
-           //     iconUrl: "sight-2.png"
-            // })
-       // });
-    // }
-// });
-// sehenswuerdigkeitengroup.addLayer(geojson);
-// myMap.fitBounds(sehenswuerdigkeitendata.getBounds());
-// }
+ async function addGeojson(url) {
+ console.log("Url wird geladen:", url);
+ const response = await fetch(url);
+ console.log("Response:", response);
+ const sehenswuerdigkeitendata = await response.json();
+ console.log("GeoJson:", sehenswuerdigkeitendata);
+ const geojson = L.geoJSON(sehenswuerdigkeitendata, {
+     style: function(feature) {
+        return { color: "#ff0000" };
+     },
+     pointToLayer: function(geoJsonPoint, latlng) {
+        return L.marker(latlng, {
+            icon: L.icon({
+                iconUrl: "sightseeing.png"
+             })
+        });
+     }
+ });
+ sehenswuerdigkeitengroup.addLayer(geojson);
+ myMap.fitBounds(sehenswuerdigkeitendata.getBounds());
+ }
 
-// const url ="https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&srsName=EPSG:4326&outputFormat=json&typeName=ogdwien:SPAZIERPUNKTOGD,ogdwien:SPAZIERLINIEOGD"
-// addGeojson(url);
+ const url ="https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:SEHENSWUERDIGOGD&srsName=EPSG:4326&outputFormat=json"
+ addGeojson(url);
 
 myMap.addLayer(sehenswuerdigkeitengroup);
 
