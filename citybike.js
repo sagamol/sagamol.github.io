@@ -82,10 +82,12 @@ geojson.bindPopup(function(layer) {
            });
         }
     });
+
+    const hash = new L.Hash(myMap);
     citybikegroup.addLayer(geojson);
     myMap.fitBounds(citybikedata.getBounds());
     }
-   
+    
     const url ="https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:CITYBIKEOGD&srsName=EPSG:4326&outputFormat=json"
     addGeojson(url);
    
