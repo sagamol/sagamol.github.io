@@ -14,23 +14,23 @@ let myLayers = {
     }
     ),
 
-    //eKarte Tirol Sommer: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_base_summer/{TileMatrixSet}/{z}/{y}/{x}.jpeg80", {
-       // subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
-       // attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'data.gv.at</a>",
+    eKarte_Tirol_Sommer: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_base_summer/GoogleMapsCompatible/{z}/{y}/{x}.jpeg80", //{
+        // subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
+       // attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
     //}
-    //),
+    ),
 
-    //eKarte Tirol Winter: L.tileLayer(http://wmts.kartetirol.at/wmts/gdi_base_winter/{TileMatrixSet}/{z}/{y}/{x}.jpeg80", {
+    eKarte_Tirol_Winter: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_base_winter/GoogleMapsCompatible/{z}/{y}/{x}.jpeg80", //{
        // subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
-       // attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'data.gv.at</a>",
+       // attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
     //}
-    //),
+    ),
 
-    //eKarte Tirol Ortho: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_ortho/{TileMatrixSet}/{z}/{y}/{x}.jpeg80", {
+    eKarte_Tirol_Ortho: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_ortho/GoogleMapsCompatible/{z}/{y}/{x}.jpeg80", //{
        // subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
-       // attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'data.gv.at</a>",
+       // attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
     //}
-    //),
+    ),
 
     // bmapgrau: L.tileLayer("https://{s}.wien.gv.at/basemap/bmapgrau/normal/google3857/{z}/{y}/{x}.png", {
        // subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
@@ -38,11 +38,11 @@ let myLayers = {
     //}
     //),
 
-    //gdi_nomenklatur: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_nomenklatur/{TileMatrixSet}/{z}/{y}/{x}.png8", {
+    gdi_nomenklatur: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_nomenklatur/GoogleMapsCompatible/{z}/{y}/{x}.png8", //{
        // subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
-       // attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'data.gv.at</a>",
+       // attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
     //}
-    //),
+    ),
 
     //bmaphidpi: L.tileLayer("https://{s}.wien.gv.at/basemap/bmaphidpi/normal/google3857/{z}/{y}/{x}.jpeg", {
         //subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
@@ -66,15 +66,24 @@ let myMapControl = L.control.layers({
     //"basemap.at grau": myLayers.bmapgrau,
     //"basemap.at highdpi": myLayers.bmaphidpi,
     //"basemap.at Orthofoto": myLayers.bmaporthofoto30cm,
+    "gdi_base_summer": myLayers.eKarte_Tirol_Sommer,
+    "gdi_base_winter": myLayers.eKarte_Tirol_Winter,
+    "gdi_ortho": myLayers.eKarte_Tirol_Ortho,
 }, {
         "basemap.at Overlay": myLayers.bmapoverlay,
         "Variante Pillersee": etappe12group,
+       // "Beschriftung eKarte Tirol": gdi_nomenklatur,
     });
 myMap.addControl(myMapControl);
 
 myMap.setView([47.528115, 12.577668], 11);
 
 let geojson = L.geoJSON(etappe12data).addTo(etappe12group);
+//const geojson = L.geoJSON(etappe12data, {
+  //  style: function(feature) {
+    //    return { color: "#ff0000" };
+    //},
+//});
 
 L.control.scale({           
     maxWidth : 200,        
