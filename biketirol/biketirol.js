@@ -1,4 +1,5 @@
 let myMap = L.map("map");
+
 let etappe12group = L.featureGroup().addTo(myMap);
 let myLayers = {
     osm: L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
@@ -38,7 +39,7 @@ let myLayers = {
     //}
     //),
 
-    gdi_nomenklatur: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_nomenklatur/GoogleMapsCompatible/{z}/{x}/{y}.png8", {
+    gdi_nomenklatur: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_nomenklatur/GoogleMapsCompatible/{z}/{x}/{y}.jpeg80", {
        // subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
         attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
     }
@@ -79,10 +80,18 @@ myMap.addControl(myMapControl);
 myMap.setView([47.528115, 12.577668], 11);
 
 //let geojson = L.geoJSON(etappe12data).addTo(etappe12group);
-const geojson = L.geoJSON(etappe12data, {
-    type: "LineString",
-    coordinates: [[47.570246, 12.468518][ 47.569861, 12.46965 ], [ 47.570421, 12.470765 ]],
-}).addTo(etappe12group);
+//const geojson = L.geoJSON(etappe12data, {
+  //  type: "LineString",
+    //coordinates: [[47.570246, 12.468518][ 47.569861, 12.46965 ], [ 47.570421, 12.470765 ]],
+//}).addTo(etappe12group);
+
+
+let gpxTrack = new L.GPX("data/etappe12.gpx", {
+    async : true,
+}).addTo(overlayTrack);
+gpxTrack.on("loaded", function(evt) {
+    karte.fitBounds(evt.target.getBounds());
+});
 
 L.control.scale({           
     maxWidth : 200,        
