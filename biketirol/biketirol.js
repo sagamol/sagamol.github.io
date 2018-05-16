@@ -80,9 +80,8 @@ myMap.setView([47.528115, 12.577668], 11);
 
 //let geojson = L.geoJSON(etappe12data).addTo(etappe12group);
 const geojson = L.geoJSON(etappe12data, {
-    style: function(feature) {
-       return { color: "#ff0000" };
-    },
+    type: "LineString",
+    coordinates: [[47.570246, 12.468518][ 47.569861, 12.46965 ], [ 47.570421, 12.470765 ]],
 }).addTo(etappe12group);
 
 L.control.scale({           
