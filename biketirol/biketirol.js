@@ -14,22 +14,22 @@ let myLayers = {
     }
     ),
 
-    eKarte_Tirol_Sommer: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_base_summer/GoogleMapsCompatible/{z}/{y}/{x}.jpeg80", //{
-        // subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
-       // attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
-    //}
+    eKarte_Tirol_Sommer: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_base_summer/GoogleMapsCompatible/{z}/{y}/{x}.jpeg80", {
+         subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
+        attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
+    }
     ),
 
-    eKarte_Tirol_Winter: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_base_winter/GoogleMapsCompatible/{z}/{y}/{x}.jpeg80", //{
-       // subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
-       // attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
-    //}
+    eKarte_Tirol_Winter: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_base_winter/GoogleMapsCompatible/{z}/{y}/{x}.jpeg80", {
+        subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
+        attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
+    }
     ),
 
-    eKarte_Tirol_Ortho: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_ortho/GoogleMapsCompatible/{z}/{y}/{x}.jpeg80", //{
+    eKarte_Tirol_Ortho: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_ortho/GoogleMapsCompatible/{z}/{y}/{x}.jpeg80", {
        // subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
-       // attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
-    //}
+        attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
+    }
     ),
 
     // bmapgrau: L.tileLayer("https://{s}.wien.gv.at/basemap/bmapgrau/normal/google3857/{z}/{y}/{x}.png", {
@@ -38,10 +38,10 @@ let myLayers = {
     //}
     //),
 
-    gdi_nomenklatur: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_nomenklatur/GoogleMapsCompatible/{z}/{y}/{x}.png8", //{
+    gdi_nomenklatur: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_nomenklatur/GoogleMapsCompatible/{z}/{y}/{x}.png8", {
        // subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
-       // attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
-    //}
+        attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
+    }
     ),
 
     //bmaphidpi: L.tileLayer("https://{s}.wien.gv.at/basemap/bmaphidpi/normal/google3857/{z}/{y}/{x}.jpeg", {
@@ -72,18 +72,18 @@ let myMapControl = L.control.layers({
 }, {
         "basemap.at Overlay": myLayers.bmapoverlay,
         "Variante Pillersee": etappe12group,
-       // "Beschriftung eKarte Tirol": gdi_nomenklatur,
+        //"Beschriftung eKarte Tirol": gdi_nomenklatur,
     });
 myMap.addControl(myMapControl);
 
 myMap.setView([47.528115, 12.577668], 11);
 
-let geojson = L.geoJSON(etappe12data).addTo(etappe12group);
-//const geojson = L.geoJSON(etappe12data, {
-  //  style: function(feature) {
-    //    return { color: "#ff0000" };
-    //},
-//});
+//let geojson = L.geoJSON(etappe12data).addTo(etappe12group);
+const geojson = L.geoJSON(etappe12data, {
+    style: function(feature) {
+       return { color: "#ff0000" };
+    },
+}).addTo(etappe12group);
 
 L.control.scale({           
     maxWidth : 200,        
@@ -103,6 +103,7 @@ let myIcon1 = L.icon({
     iconUrl: 'start-race-2.png',
     });
 L.marker([47.570246,12.468518], {icon: myIcon1}).addTo(myMap);
+
 
 let etappenendeMarker = L.marker(etappenendekoor).addTo(etappe12group);
 etappenendeMarker.bindPopup('<p>Mühlbach</p><a href="https://de.wikipedia.org/wiki/M%C3%BChlbach_am_Hochk%C3%B6nig"> Mühlbach am Hochkönig</a>');
