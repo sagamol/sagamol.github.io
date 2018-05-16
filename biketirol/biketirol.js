@@ -99,18 +99,18 @@ const etappenendekoor = [47.501216,12.4901];
 let etappenbeginnMarker = L.marker(etappenbeginnkoor).addTo(etappe12group);
 etappenbeginnMarker.bindPopup('<p>Erpfendorf</p><a href="https://www.kitzbueheler-alpen.com/de/erpfendorf/erpfendorf-tirol-ortsinformation-zahlen-fakten.html"> Erpfendorf in Tirol - Ortsinformation</a>');
 
-//var myIcon1 = L.icon({
-  //  iconUrl: 'start-race-2.png',
-  //  });
-//L.marker([47.570246,12.468518], {icon: myIcon1}).addTo(map);
+let myIcon1 = L.icon({
+    iconUrl: 'start-race-2.png',
+    });
+L.marker([47.570246,12.468518], {icon: myIcon1}).addTo(myMap);
 
 let etappenendeMarker = L.marker(etappenendekoor).addTo(etappe12group);
 etappenendeMarker.bindPopup('<p>Mühlbach</p><a href="https://de.wikipedia.org/wiki/M%C3%BChlbach_am_Hochk%C3%B6nig"> Mühlbach am Hochkönig</a>');
 
-//var myIcon2 = L.icon({
-  //iconUrl: 'finish.png',
-  //});
-//L.marker([47.501216,12.4901], {icon: myIcon2}).addTo(map);
+let myIcon2 = L.icon({
+  iconUrl: 'finish.png',
+  });
+L.marker([47.501216,12.4901], {icon: myIcon2}).addTo(myMap);
 
 myMap.addLayer(etappe12group)
 
