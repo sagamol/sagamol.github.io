@@ -14,19 +14,19 @@ let myLayers = {
     }
     ),
 
-    eKarte_Tirol_Sommer: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_base_summer/GoogleMapsCompatible/{z}/{y}/{x}.jpeg80", {
+    eKarte_Tirol_Sommer: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_base_summer/GoogleMapsCompatible/{z}/{x}/{y}.jpeg80", {
          subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
         attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
     }
     ),
 
-    eKarte_Tirol_Winter: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_base_winter/GoogleMapsCompatible/{z}/{y}/{x}.jpeg80", {
+    eKarte_Tirol_Winter: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_base_winter/GoogleMapsCompatible/{z}/{x}/{y}.jpeg80", {
         subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
         attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
     }
     ),
 
-    eKarte_Tirol_Ortho: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_ortho/GoogleMapsCompatible/{z}/{y}/{x}.jpeg80", {
+    eKarte_Tirol_Ortho: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_ortho/GoogleMapsCompatible/{z}/{x}/{y}.jpeg80", {
        // subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
         attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
     }
@@ -38,7 +38,7 @@ let myLayers = {
     //}
     //),
 
-    gdi_nomenklatur: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_nomenklatur/GoogleMapsCompatible/{z}/{y}/{x}.png8", {
+    gdi_nomenklatur: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_nomenklatur/GoogleMapsCompatible/{z}/{x}/{y}.png8", {
        // subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
         attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
     }
