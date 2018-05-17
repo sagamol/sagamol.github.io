@@ -65,9 +65,11 @@ L.control.scale({
 }).addTo(karte);
 
 // asynchrone Funktion zum Laden eines GeoJSON Layers
-async function ladeGeojsonLayer(url) {
-    const response = await fetch(url);
+async function ladeGeojsonLayer(datenAttribute) {
+    //console.log(datenAttribute)
+    const response = await fetch(datenAttribute.json);
     const response_json = await response.json();
+
 
     if (datenAttribute) {
         //console.log("Pause");
