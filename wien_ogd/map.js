@@ -70,16 +70,10 @@ async function ladeGeojsonLayer(datenAttribute) {
     const response = await fetch(datenAttribute.json);
     const response_json = await response.json();
 
-<<<<<<< HEAD
 
     if (datenAttribute) {
         //console.log("Pause");
 }
-=======
-    if (datenAttribute) {
-        //console.log("Pause");
-    }
->>>>>>> 727ebb15a538c39ad6b2e5f1b4e2dcee2bb54bcd
 
     // GeoJSON Geometrien hinzufügen und auf Ausschnitt zoomen
     const geojsonObjekt = L.geoJSON(response_json, {
