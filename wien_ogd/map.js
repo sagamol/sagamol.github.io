@@ -70,10 +70,9 @@ async function ladeGeojsonLayer(datenAttribute) {
     const response = await fetch(datenAttribute.json);
     const response_json = await response.json();
 
-
     if (datenAttribute) {
         //console.log("Pause");
-}
+    }
 
     // GeoJSON Geometrien hinzufügen und auf Ausschnitt zoomen
     const geojsonObjekt = L.geoJSON(response_json, {
@@ -118,7 +117,7 @@ wienDatensaetze.sort(function(a,b) {
     }
 })
 // den GeoJSON Layer für Grillplätze laden
-ladeGeojsonLayer(wienDatensaetze[0].json);
+ladeGeojsonLayer(wienDatensaetze[0]);
 
 let layerAuswahl = document.getElementById("layerAuswahl");
 for (let i=0; i<wienDatensaetze.length; i++) {
