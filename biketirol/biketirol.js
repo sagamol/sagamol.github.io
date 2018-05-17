@@ -112,6 +112,20 @@ myMap.addControl(myMapControl);
 myMap.addLayer(myLayers.geolandbasemap);
 myMap.setView([47.528115, 12.577668], 11);
 
+let gpxTrack = new L.GPX("data/etappe12.gpx", {
+    async : true,
+}).addTo(etappe12group);
+gpxTrack.on("loaded", function(evt) {
+    console.log("get_distance",evt.target.get_distance().toFixed(0))
+    console.log("get_elevation_min",evt.target.get_elevation_min().toFixed(0))
+    console.log("get_elevation_max",evt.target.get_elevation_max().toFixed(0))
+    console.log("get_elevation_gain",evt.target.get_elevation_gain().toFixed(0))
+    console.log("get_elevation_loss",evt.target.get_elevation_loss().toFixed(0))
+    let laenge = evt.target.get_distance().toFixed(0);
+    document.getElementById("laenge").innerHTML = laenge;
+    karte.fitBounds(evt.target.getBounds());
+});
+
 // Maßstabsleiste metrisch
 L.control.scale({           
     maxWidth : 200,        
