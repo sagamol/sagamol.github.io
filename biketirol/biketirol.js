@@ -1,62 +1,97 @@
+/*
+    Vorbereitung: GPX Track herunterladen und nach GeoJSON konvertieren
+    -------------------------------------------------------------------
+    Datenquelle https://www.data.gv.at/suche/?search-term=bike+trail+tirol&searchIn=catalog
+    Download Einzeletappen / Zur Ressource ...
+    Alle Dateien im unterverzeichnis data/ ablegen
+    Die .gpx Datei der eigenen Etappe als etappe00.gpx speichern
+    Die .gpx Datei über https://mapbox.github.io/togeojson/ in .geojson umwandeln und als etappe00.geojson speichern
+    Die etappe00.geojson Datei in ein Javascript Objekt umwandeln und als etappe00.geojson.js speichern
+
+    -> statt 00 natürlich die eigene Etappe (z.B. 01,02, ...25)
+*/
+
+// eine neue Leaflet Karte definieren
 let myMap = L.map("map");
+
+// Layer für Etappe12 und Start- Zielmarker hinzufügen
 let etappe12group = L.featureGroup().addTo(myMap);
-let myLayers = {
-    osm: L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"),
-    geolandbasemap: L.tileLayer("https://{s}.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png", {
+let overlayMarker = L.featureGroup().addTo(myMap);
+
+// Grundkartenlayer mit OSM, basemap.at, Elektronische Karte Tirol (Sommer, Winter, Orthophoto jeweils mit Beschriftung)
+const myLayers = {
+    osm: L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            subdomains: ["a","b","c"],
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }
+    ),
+    geolandbasemap: L.tileLayer(
+        "https://{s}.wien.gv.at/basemap/geolandbasemap/normal/google3857/{z}/{y}/{x}.png", {
         subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
         attribution: "Datenquelle: <a href='https://www.basemap.at'>basemap.at</a>",
     }
     ),
-
-    bmapoverlay: L.tileLayer("https://{s}.wien.gv.at/basemap/bmapoverlay/normal/google3857/{z}/{y}/{x}.png", {
+    bmapoverlay: L.tileLayer(
+        "https://{s}.wien.gv.at/basemap/bmapoverlay/normal/google3857/{z}/{y}/{x}.png", {
         subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
         attribution: "Datenquelle: <a href='https://www.basemap.at'>basemap.at</a>",
     }
     ),
-
-    eKarte_Tirol_Sommer: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_base_summer/GoogleMapsCompatible/{z}/{x}/{y}.jpeg80", {
-         subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
-        attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
+    eKarte_Tirol_Sommer: L.tileLayer(
+        "http://wmts.kartetirol.at/wmts/gdi_base_summer/GoogleMapsCompatible/{z}/{x}/{y}.jpeg80", {
+        attribution: "Datenquelle: <a href='https://www.data.gv.at/katalog/dataset/land-tirol_elektronischekartetirol'>eKarte Tirol</a>",
     }
     ),
-
-    eKarte_Tirol_Winter: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_base_winter/GoogleMapsCompatible/{z}/{x}/{y}.jpeg80", {
+    eKarte_Tirol_Winter: L.tileLayer(
+        "http://wmts.kartetirol.at/wmts/gdi_base_winter/GoogleMapsCompatible/{z}/{x}/{y}.jpeg80", {
+        attribution: "Datenquelle: <a href='https://www.data.gv.at/katalog/dataset/land-tirol_elektronischekartetirol'>eKarte Tirol</a>",
+    }
+    ),
+    eKarte_Tirol_Ortho: L.tileLayer(
+        "http://wmts.kartetirol.at/wmts/gdi_ortho/GoogleMapsCompatible/{z}/{x}/{y}.jpeg80", {
+        attribution: "Datenquelle: <a href='https://www.data.gv.at/katalog/dataset/land-tirol_elektronischekartetirol'>eKarte Tirol</a>",
+    }
+    ),
+    bmapgrau: L.tileLayer(
+        "https://{s}.wien.gv.at/basemap/bmapgrau/normal/google3857/{z}/{y}/{x}.png", {
         subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
-        attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
+        attribution: "Datenquelle: <a href='https://www.basemap.at'>basemap.at</a>",
     }
     ),
-
-    eKarte_Tirol_Ortho: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_ortho/GoogleMapsCompatible/{z}/{x}/{y}.jpeg80", {
-       // subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
-        attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
+    gdi_nomenklatur: L.tileLayer(
+        "http://wmts.kartetirol.at/wmts/gdi_nomenklatur/GoogleMapsCompatible/{z}/{x}/{y}.png8", {
+            attribution: "Datenquelle: <a href='https://www.data.gv.at/katalog/dataset/land-tirol_elektronischekartetirol'>eKarte Tirol</a>",
+            pane: "overlayPane",
     }
     ),
-
-    // bmapgrau: L.tileLayer("https://{s}.wien.gv.at/basemap/bmapgrau/normal/google3857/{z}/{y}/{x}.png", {
-       // subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
-       // attribution: "Datenquelle: <a href='https://www.basemap.at'>basemap.at</a>",
-    //}
-    //),
-
-    gdi_nomenklatur: L.tileLayer("http://wmts.kartetirol.at/wmts/gdi_nomenklatur/GoogleMapsCompatible/{z}/{x}/{y}.png8", {
-       // subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
-        attribution: "Datenquelle: <a href='http://wmts.kartetirol.at/wmts'>data.gv.at</a>",
+    bmaphidpi: L.tileLayer(
+        "https://{s}.wien.gv.at/basemap/bmaphidpi/normal/google3857/{z}/{y}/{x}.jpeg", {
+        subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
+        attribution: "Datenquelle: <a href='https://www.basemap.at'>basemap.at</a>",
     }
     ),
-
-    //bmaphidpi: L.tileLayer("https://{s}.wien.gv.at/basemap/bmaphidpi/normal/google3857/{z}/{y}/{x}.jpeg", {
-        //subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
-        //attribution: "Datenquelle: <a href='https://www.basemap.at'>basemap.at</a>",
-    //}
-    //),
-
-    //bmaporthofoto30cm: L.tileLayer("https://{s}.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg", {
-       // subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
-       // attribution: "Datenquelle: <a href='https://www.basemap.at'>basemap.at</a>",
-    //}
-    //),
-
+    bmaporthofoto30cm: L.tileLayer(
+        "https://{s}.wien.gv.at/basemap/bmaporthofoto30cm/normal/google3857/{z}/{y}/{x}.jpeg", {
+        subdomains: ["maps", "maps1", "maps2", "maps3", "maps4"],
+        attribution: "Datenquelle: <a href='https://www.basemap.at'>basemap.at</a>",
+    }
+    ),
 }
+
+// Layergruppen für die Elektronische Karte Tirol definieren
+const tirisSommer = L.layerGroup([
+    grundkartenLayer.eKarte_Tirol_Sommer,
+    grundkartenLayer.gdi_nomenklatur
+]);
+const tirisWinter = L.layerGroup([
+    grundkartenLayer.eKarte_Tirol_Winter,
+    grundkartenLayer.gdi_nomenklatur
+]);
+const tirisOrtho = L.layerGroup([
+    grundkartenLayer.eKarte_Tirol_Ortho,
+    grundkartenLayer.gdi_nomenklatur
+]);
 
 myMap.addLayer(myLayers.geolandbasemap);
 myMap.addLayer(etappe12group);
@@ -114,22 +149,8 @@ L.marker([47.501216,12.4901], {icon: myIcon2}).addTo(myMap);
 
 myMap.addLayer(etappe12group)
 
-/*
-    Vorbereitung: GPX Track herunterladen und nach GeoJSON konvertieren
-    -------------------------------------------------------------------
-    Datenquelle https://www.data.gv.at/suche/?search-term=bike+trail+tirol&searchIn=catalog
-    Download Einzeletappen / Zur Ressource ...
-    Alle Dateien im unterverzeichnis data/ ablegen
-    Die .gpx Datei der eigenen Etappe als etappe00.gpx speichern
-    Die .gpx Datei über https://mapbox.github.io/togeojson/ in .geojson umwandeln und als etappe00.geojson speichern
-    Die etappe00.geojson Datei in ein Javascript Objekt umwandeln und als etappe00.geojson.js speichern
 
-    -> statt 00 natürlich die eigene Etappe (z.B. 01,02, ...25)
-*/
 
-// eine neue Leaflet Karte definieren
-
-// Grundkartenlayer mit OSM, basemap.at, Elektronische Karte Tirol (Sommer, Winter, Orthophoto jeweils mit Beschriftung) über L.featureGroup([]) definieren
 // WMTS URLs siehe https://www.data.gv.at/katalog/dataset/land-tirol_elektronischekartetirol
 
 // Maßstab metrisch ohne inch
