@@ -123,7 +123,7 @@ gpxTrack.on("loaded", function(evt) {
     console.log("get_elevation_loss",evt.target.get_elevation_loss().toFixed(0))
     let laenge = evt.target.get_distance().toFixed(0);
     document.getElementById("laenge").innerHTML = laenge;
-    karte.fitBounds(evt.target.getBounds());
+    myMap.fitBounds(evt.target.getBounds());
 });
 
 // Maßstabsleiste metrisch
