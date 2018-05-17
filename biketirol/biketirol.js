@@ -112,7 +112,7 @@ let myMapControl = L.control.layers({
 
 myMap.addControl(myMapControl);
 myMap.addLayer(myLayers.geolandbasemap);
-myMap.setView([47.528115, 12.577668], 11);
+myMap.setView([47.528115, 12.577668], 9);
 
 let gpxTrack = new L.GPX("data/etappe12.gpx", {
     async : true,
