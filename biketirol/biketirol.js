@@ -158,3 +158,5 @@ L.marker([47.501216,12.4901],{
 // GeoJSON Track als Linie in der Karte einzeichnen und auf Ausschnitt zoomen
 let geojsonTrack = L.geoJSON(etappe12data).addTo(etappe12group);
 myMap.fitBounds(geojsonTrack.getBounds())
+
+map.addControl(new L.Control.Fullscreen());
