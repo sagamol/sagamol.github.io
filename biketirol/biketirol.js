@@ -125,13 +125,13 @@ gpxTrack.on("loaded", function(evt) {
     console.log("get_elevation_loss",evt.target.get_elevation_loss().toFixed(0))
     let laenge = evt.target.get_distance().toFixed(0);
     document.getElementById("laenge").innerHTML = laenge;
-    let tiefster_Punkt = evt.target.get_distance().toFixed(0);
+    let tiefster_Punkt = evt.target.get_elevation_min().toFixed(0);
     document.getElementById("tiefster_Punkt").innerHTML = tiefster_Punkt;
-    let hoechster_Punkt = evt.target.get_distance().toFixed(0);
+    let hoechster_Punkt = evt.target.get_elevation_max().toFixed(0);
     document.getElementById("hoechster_Punkt").innerHTML = hoechster_Punkt;
-    let aufstieg = evt.target.get_distance().toFixed(0);
+    let aufstieg = evt.target.get_elevation_gain().toFixed(0);
     document.getElementById("aufstieg").innerHTML = aufstieg;
-    let abstieg = evt.target.get_distance().toFixed(0);
+    let abstieg = evt.target.get_elevation_loss().toFixed(0);
     document.getElementById("abstieg").innerHTML = abstieg;
 
     myMap.fitBounds(evt.target.getBounds());
