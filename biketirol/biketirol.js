@@ -13,7 +13,9 @@
 
 // eine neue Leaflet Karte definieren
 let myMap = L.map("map");
-
+let karte = L.map("map", {
+    fullscreenControl: true,
+});
 // Layer für Etappe12 und Start- Zielmarker hinzufügen
 let etappe12group = L.featureGroup().addTo(myMap);
 let overlayMarker = L.featureGroup().addTo(myMap);
