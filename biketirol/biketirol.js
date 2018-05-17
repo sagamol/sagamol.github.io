@@ -148,7 +148,7 @@ L.control.scale({
 // Start- und Endpunkte der Route als Marker mit Popup, Namen, Wikipedia Link und passenden Icons für Start/Ziel von https://mapicons.mapsmarker.com/
 L.marker([47.570246,12.468518],{
     icon : L.icon({
-        iconUrl : 'start-race-2.png',
+        iconUrl : 'images/start-race-2.png',
         iconAnchor : [16,37],
         popupAnchor : [0,-37],
     })
@@ -158,7 +158,7 @@ L.marker([47.570246,12.468518],{
 
 L.marker([47.501216,12.4901],{
     icon : L.icon({
-        iconUrl : 'finish.png',
+        iconUrl : 'images/finish.png',
         iconAnchor : [16,37],
         popupAnchor : [0,-37],
     })
