@@ -12,8 +12,8 @@
 */
 
 // eine neue Leaflet Karte definieren
-let myMap = L.map("map");
-let karte = L.map("map", {
+//let myMap = L.map("map");
+let myMap = L.map("map", {
     fullscreenControl: true,
 });
 // Layer für Etappe12 und Start- Zielmarker hinzufügen
@@ -158,4 +158,4 @@ L.marker([47.501216,12.4901],{
 ).addTo(overlayMarker);
 
 // GeoJSON Track als Linie in der Karte einzeichnen und auf Ausschnitt zoomen
-let geojsonTrack = L.geoJSON(etappe12data).addTo(etappe12group);
+//let geojsonTrack = L.geoJSON(etappe12data).addTo(etappe12group);
