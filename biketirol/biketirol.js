@@ -116,7 +116,13 @@ myMap.setView([47.528115, 12.577668], 9);
 
 let gpxTrack = new L.GPX("data/etappe12.gpx", {
     async : true,
-}).addTo(etappe12group);
+        marker_options : {
+            startIconUrl : null,
+            endIconUrl : null,
+            shadowUrl : null,
+        }
+    }).addTo(etappe12group);
+
 gpxTrack.on("loaded", function(evt) {
     console.log("get_distance",evt.target.get_distance().toFixed(0))
     console.log("get_elevation_min",evt.target.get_elevation_min().toFixed(0))
