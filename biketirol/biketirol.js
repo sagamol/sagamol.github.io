@@ -19,6 +19,7 @@ let myMap = L.map("map", {
 // Layer für Etappe12 und Start- Zielmarker hinzufügen
 let etappe12group = L.featureGroup().addTo(myMap);
 let overlayMarker = L.featureGroup().addTo(myMap);
+let overlaySteigung = L.featureGroup().addTo(myMap);
 
 // Grundkartenlayer mit OSM, basemap.at, Elektronische Karte Tirol (Sommer, Winter, Orthophoto jeweils mit Beschriftung)
 const myLayers = {
@@ -106,13 +107,22 @@ let myMapControl = L.control.layers({
     "Elektronische Karte Tirol - Winter": tirisWinter,
     "Elektronische Karte Tirol - Orthophoto": tirisOrtho,
 }, {
-        "Etappe12: Variante Pillersee": etappe12group,
+        //"Etappe12: Variante Pillersee": etappe12group,
         "Start / Ziel": overlayMarker,
-    });
+        "Steigungslinie": overlaySteigung,
+});
 
 myMap.addControl(myMapControl);
 myMap.addLayer(myLayers.geolandbasemap);
 myMap.setView([47.528115, 12.577668], 9);
+
+// Höhenprofil control hinzufügen
+let hoehenprofil = L.control.elevation({
+    position : "topright",
+    theme : "steelblue-theme",
+    collapsed: false,
+}).addTo(myMap);
+
 
 let gpxTrack = new L.GPX("data/etappe12.gpx", {
     async : true,
@@ -121,14 +131,15 @@ let gpxTrack = new L.GPX("data/etappe12.gpx", {
             endIconUrl : null,
             shadowUrl : null,
         }
-    }).addTo(etappe12group);
+    })//.addTo(etappe12group);
+
 
 gpxTrack.on("loaded", function(evt) {
-    console.log("get_distance",evt.target.get_distance().toFixed(0))
-    console.log("get_elevation_min",evt.target.get_elevation_min().toFixed(0))
-    console.log("get_elevation_max",evt.target.get_elevation_max().toFixed(0))
-    console.log("get_elevation_gain",evt.target.get_elevation_gain().toFixed(0))
-    console.log("get_elevation_loss",evt.target.get_elevation_loss().toFixed(0))
+    //console.log("get_distance",evt.target.get_distance().toFixed(0))
+    //console.log("get_elevation_min",evt.target.get_elevation_min().toFixed(0))
+    //console.log("get_elevation_max",evt.target.get_elevation_max().toFixed(0))
+    //console.log("get_elevation_gain",evt.target.get_elevation_gain().toFixed(0))
+    //console.log("get_elevation_loss",evt.target.get_elevation_loss().toFixed(0))
     let laenge = evt.target.get_distance().toFixed(0);
     document.getElementById("laenge").innerHTML = laenge;
     let tiefster_Punkt = evt.target.get_elevation_min().toFixed(0);
@@ -141,6 +152,64 @@ gpxTrack.on("loaded", function(evt) {
     document.getElementById("abstieg").innerHTML = abstieg;
 
     myMap.fitBounds(evt.target.getBounds());
+});
+
+gpxTrack.on('addline', function(evt){
+    hoehenprofil.addData(evt.line);
+    console.log(evt.line);
+    console.log(evt.line.getLatLngs());
+    console.log(evt.line.getLatLngs()[0]);
+    console.log(evt.line.getLatLngs()[0].lat);
+    console.log(evt.line.getLatLngs()[0].lngs);
+    console.log(evt.line.getLatLngs()[0].meta);
+    console.log(evt.line.getLatLngs()[0].meta.ele);
+
+    // alle Segmente Steigungslinie hinzufügen
+    let gpxLinie = evt.line.getLatLngs();
+    for (let i = 1; i < gpxLinie.length; i++) {
+            let p1 = gpxLinie[i-1];
+            let p2 = gpxLinie[i];
+            //console.log(p1.lat,p1.lng,p2.lat,p2.lng,dist,delta,proz);
+
+            // Entfernung zwischen den Punkten berechnen
+            let dist = myMap.distance(
+                [p1.lat,p1.lng],
+                [p2.lat,p2.lng]
+            );
+            
+            //Höhenunterschied berechnen
+            let delta = p2.meta.ele - p1.meta.ele;
+
+            // Steigung in % berechnen
+            //let proz = 0;
+            //if (dist > 0) {
+            //let proz = (delta / dist * 100.0).toFixed(1);
+            //}
+            let proz = (dist > 0) ? (delta / dist * 100.0).toFixed(1) : 0;
+            // Bedingung ? Ausdruck1 : Ausdruck2
+            //console.log(p1.lat,p1.lng,p2.lat,p2.lng,dist,delta,proz);
+
+            let farbe =
+                proz > 10   ? "#d7301f" :
+                proz > 6    ? "#fc8d59" :
+                proz > 2    ? "#fdcc8a" :
+                proz > 0    ? "#edf8fb" :
+                proz > -2   ? "#b2e2e2" :
+                proz > -6   ? "#66c2a4" :
+                proz > -10  ? "#238b45" :
+                            "green";
+                // Farbschema grün ['#edf8fb','#b2e2e2','#66c2a4','#238b45'], http://colorbrewer2.org/?type=sequential&scheme=BuGn&n=4
+                // Farbschema rot ['#fef0d9','#fdcc8a','#fc8d59','#d7301f'], http://colorbrewer2.org/?type=sequential&scheme=OrRd&n=4
+            let segment = L.polyline(
+                [
+                    [p1.lat,p1.lng],
+                    [p2.lat,p2.lng],
+                 ], {
+                     color: farbe,
+                     weight: 10,
+                    }
+                ).addTo(overlaySteigung);
+    }
 });
 
 // Maßstabsleiste metrisch
